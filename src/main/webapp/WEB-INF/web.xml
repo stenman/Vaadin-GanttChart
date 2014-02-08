@@ -29,7 +29,7 @@
 		<init-param>
 			<description>Application widgetset</description>
 			<param-name>widgetset</param-name>
-			<param-value>com.example.vaadin.ganttchart.ganttchart.AppWidgetSet</param-value>
+			<param-value>com.example.vaadin.ganttchart.main.AppWidgetSet</param-value>
 		</init-param>
 	</servlet>
 

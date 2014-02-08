@@ -1,17 +1,10 @@
-package com.example.vaadin.ganttchart.ganttchart;
-
-import javax.servlet.annotation.WebServlet;
+package com.example.vaadin.ganttchart.main;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import ru.xpoft.vaadin.DiscoveryNavigator;
-
 import com.vaadin.annotations.PreserveOnRefresh;
-import com.vaadin.annotations.Theme;
-import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Label;
