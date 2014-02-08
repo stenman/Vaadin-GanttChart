@@ -12,10 +12,11 @@ import org.tltv.gantt.client.shared.Step;
 
 import com.vaadin.ui.Notification;
 
-@SuppressWarnings("serial")
 @Scope("prototype")
 @Component
 public class GanttChart extends Gantt {
+
+	private static final long serialVersionUID = 1L;
 
 	@PostConstruct
 	public void PostConstruct() {

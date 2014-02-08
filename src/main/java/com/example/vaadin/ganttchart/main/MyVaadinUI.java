@@ -17,9 +17,10 @@ import com.vaadin.ui.UI;
  */
 @Controller
 @Scope("prototype")
-@SuppressWarnings("serial")
 @PreserveOnRefresh
 public class MyVaadinUI extends UI {
+
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	protected void init(VaadinRequest request) {

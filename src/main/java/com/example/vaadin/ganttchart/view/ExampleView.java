@@ -1,6 +1,7 @@
 package com.example.vaadin.ganttchart.view;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,8 +10,10 @@ import org.springframework.stereotype.Component;
 
 import ru.xpoft.vaadin.VaadinView;
 
+import com.example.vaadin.ganttchart.ganttchart.GanttChart;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -23,15 +26,16 @@ import com.vaadin.ui.VerticalLayout;
 @Component
 @Scope("prototype")
 @VaadinView(value = ExampleView.NAME, cached = true)
-@SuppressWarnings("serial")
 public class ExampleView extends VerticalLayout implements View {
+
+	private static final long serialVersionUID = 1L;
 
 	private static final Logger logger = LoggerFactory.getLogger(ExampleView.class);
 
 	public static final String NAME = "";
 
-	// @Inject
-	// private GanttChart ganttChart;
+	@Inject
+	private GanttChart ganttChart;
 
 	private HorizontalLayout menuLayout;
 	private HorizontalLayout ganttChartLayout;
@@ -47,13 +51,13 @@ public class ExampleView extends VerticalLayout implements View {
 		initLayout();
 		logger.info("View initialization completed.");
 	}
-	
+
 	private void setupButtons() {
 		addEvent = new Button("Add Gantt Event");
 		addEvent.addClickListener(new ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-				// ganttChart.addGanttEvent();
+				ganttChart.addGanttEvent();
 				Notification.show("Even added!", Type.HUMANIZED_MESSAGE);
 			}
 		});
@@ -69,17 +73,14 @@ public class ExampleView extends VerticalLayout implements View {
 		menuLayout = new HorizontalLayout();
 		ganttChartLayout = new HorizontalLayout();
 
-		Label label = new Label("Label!");
-
+		menuLayout.setMargin(true);
 		menuLayout.addComponent(addEvent);
 
-		// ganttChartLayout.addComponent(ganttChart);
-		ganttChartLayout.addComponent(label);
-
+		MarginInfo mi = new MarginInfo(false, true, false, true);
+		ganttChartLayout.setMargin(mi);
+		ganttChartLayout.addComponent(ganttChart);
 		ganttChartLayout.setSizeFull();
-
-		// ganttChartLayout.addComponent(ganttChart);
-
+		
 		this.addComponent(menuLayout);
 		this.addComponent(ganttChartLayout);
 
