@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.annotation.PostConstruct;
 
+import org.joda.time.DateTime;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.tltv.gantt.Gantt;
@@ -26,27 +27,21 @@ public class GanttChart extends Gantt {
 	}
 
 	public void addGanttEvent() {
-		Calendar cal = Calendar.getInstance();
-
-		cal.setTime(new Date());
 		Step step1 = new Step("First step");
-		step1.setStartDate(cal.getTime().getTime());
-		cal.add(Calendar.MONTH, 2);
-		step1.setEndDate(cal.getTime().getTime());
-
+		step1.setStartDate(new DateTime().getMillis());
+		step1.setEndDate(new DateTime().plusDays(14).getMillis());
 		this.addStep(step1);
 	}
 
 	private void initStartAndEndDates() {
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(new Date());
-		this.setStartDate(cal.getTime());
-		cal.add(Calendar.YEAR, 1);
-		this.setEndDate(cal.getTime());
+		this.setStartDate(new DateTime().toDate());
+		this.setEndDate(new DateTime().plusYears(1).toDate());
 	}
 
 	private void setupListeners() {
 		this.addClickListener(new Gantt.ClickListener() {
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void onGanttClick(org.tltv.gantt.Gantt.ClickEvent event) {
 				Notification.show("Clicked" + event.getStep().getCaption());
@@ -54,6 +49,7 @@ public class GanttChart extends Gantt {
 		});
 
 		this.addMoveListener(new Gantt.MoveListener() {
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onGanttMove(MoveEvent event) {
@@ -62,6 +58,7 @@ public class GanttChart extends Gantt {
 		});
 
 		this.addResizeListener(new Gantt.ResizeListener() {
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onGanttResize(ResizeEvent event) {

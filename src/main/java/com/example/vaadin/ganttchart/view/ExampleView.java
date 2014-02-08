@@ -18,7 +18,6 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.VerticalLayout;
@@ -55,6 +54,8 @@ public class ExampleView extends VerticalLayout implements View {
 	private void setupButtons() {
 		addEvent = new Button("Add Gantt Event");
 		addEvent.addClickListener(new ClickListener() {
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void buttonClick(ClickEvent event) {
 				ganttChart.addGanttEvent();
@@ -80,7 +81,7 @@ public class ExampleView extends VerticalLayout implements View {
 		ganttChartLayout.setMargin(mi);
 		ganttChartLayout.addComponent(ganttChart);
 		ganttChartLayout.setSizeFull();
-		
+
 		this.addComponent(menuLayout);
 		this.addComponent(ganttChartLayout);
 
