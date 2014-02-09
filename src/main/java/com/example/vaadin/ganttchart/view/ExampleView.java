@@ -7,20 +7,29 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.tltv.gantt.client.shared.Step;
 
 import ru.xpoft.vaadin.VaadinView;
 
 import com.example.vaadin.ganttchart.ganttchart.GanttChart;
+import com.vaadin.data.fieldgroup.FieldGroup;
+import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
+import com.vaadin.data.util.BeanItem;
+import com.vaadin.data.util.converter.DateToLongConverter;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.MarginInfo;
+import com.vaadin.shared.ui.datefield.Resolution;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.DateField;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 
 @Component
 @Scope("prototype")
@@ -51,19 +60,6 @@ public class ExampleView extends VerticalLayout implements View {
 		logger.info("View initialization completed.");
 	}
 
-	private void setupButtons() {
-		addEvent = new Button("Add Gantt Event");
-		addEvent.addClickListener(new ClickListener() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				ganttChart.addGanttEvent();
-				Notification.show("Even added!", Type.HUMANIZED_MESSAGE);
-			}
-		});
-	}
-
 	@Override
 	public void enter(ViewChangeEvent event) {
 	}
@@ -86,5 +82,93 @@ public class ExampleView extends VerticalLayout implements View {
 		this.addComponent(ganttChartLayout);
 
 		this.setExpandRatio(ganttChartLayout, 1);
+	}
+
+	private void setupButtons() {
+		addEvent = new Button("Add Gantt Event");
+		addEvent.addClickListener(new ClickListener() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				openStepEditor(new Step());
+				Notification.show("Not implemented yet!", Type.HUMANIZED_MESSAGE);
+			}
+		});
+	}
+
+	private void openStepEditor(Step step) {
+		final Window win = new Window("Step Editor");
+		win.center();
+
+		BeanItem<Step> item = new BeanItem<Step>(step);
+
+		final FieldGroup group = new FieldGroup(item);
+		group.setBuffered(true);
+
+		TextField captionField = new TextField("Caption");
+		captionField.setNullRepresentation("");
+		group.bind(captionField, "caption");
+
+		TextField bgField = new TextField("Background color");
+		bgField.setNullRepresentation("");
+		group.bind(bgField, "backgroundColor");
+
+		DateField startDate = new DateField("Start date");
+		startDate.setResolution(Resolution.SECOND);
+		startDate.setConverter(new DateToLongConverter());
+		group.bind(startDate, "startDate");
+
+		DateField endDate = new DateField("End date");
+		endDate.setResolution(Resolution.SECOND);
+		endDate.setConverter(new DateToLongConverter());
+		group.bind(endDate, "endDate");
+
+		VerticalLayout content = new VerticalLayout();
+		content.setMargin(true);
+		content.setSpacing(true);
+		win.setContent(content);
+
+		content.addComponent(captionField);
+		content.addComponent(bgField);
+		content.addComponent(startDate);
+		content.addComponent(endDate);
+
+		HorizontalLayout buttons = new HorizontalLayout();
+		content.addComponent(buttons);
+
+		Button ok = new Button("Ok", new ClickListener() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				try {
+					group.commit();
+					@SuppressWarnings("unchecked")
+					Step step = ((BeanItem<Step>) group.getItemDataSource()).getBean();
+					if (!ganttChart.getSteps().contains(step)) {
+						ganttChart.addStep(step);
+					}
+					win.close();
+				} catch (CommitException e) {
+					Notification.show("Commit failed", e.getMessage(), Type.ERROR_MESSAGE);
+					e.printStackTrace();
+				}
+			}
+		});
+		Button cancel = new Button("Cancel", new ClickListener() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				group.discard();
+				win.close();
+			}
+		});
+		buttons.addComponent(ok);
+		buttons.addComponent(cancel);
+		win.setClosable(true);
+
+		getUI().addWindow(win);
 	}
 }

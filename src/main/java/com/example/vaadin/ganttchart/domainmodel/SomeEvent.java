@@ -2,16 +2,16 @@ package com.example.vaadin.ganttchart.domainmodel;
 
 import org.joda.time.DateTime;
 
-public class Event {
+public class SomeEvent {
 
 	private String name;
 	private DateTime start;
 	private DateTime end;
 
-	public Event() {
+	public SomeEvent() {
 	}
 
-	public Event(String name, DateTime start, DateTime end) {
+	public SomeEvent(String name, DateTime start, DateTime end) {
 		this.name = name;
 		this.start = start;
 		this.end = end;

@@ -1,8 +1,5 @@
 package com.example.vaadin.ganttchart.ganttchart;
 
-import java.util.Calendar;
-import java.util.Date;
-
 import javax.annotation.PostConstruct;
 
 import org.joda.time.DateTime;
@@ -26,11 +23,11 @@ public class GanttChart extends Gantt {
 		initStartAndEndDates();
 	}
 
-	public void addGanttEvent() {
-		Step step1 = new Step("First step");
-		step1.setStartDate(new DateTime().getMillis());
-		step1.setEndDate(new DateTime().plusDays(14).getMillis());
-		this.addStep(step1);
+	public void addGanttStep(String stepName, DateTime start, DateTime end) {
+		Step step = new Step(stepName);
+		step.setStartDate(start.getMillis());
+		step.setEndDate(end.getMillis());
+		this.addStep(step);
 	}
 
 	private void initStartAndEndDates() {
