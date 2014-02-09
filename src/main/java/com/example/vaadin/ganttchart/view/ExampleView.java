@@ -3,6 +3,7 @@ package com.example.vaadin.ganttchart.view;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
@@ -11,6 +12,7 @@ import org.tltv.gantt.client.shared.Step;
 
 import ru.xpoft.vaadin.VaadinView;
 
+import com.example.vaadin.ganttchart.domainmodel.SomeEvent;
 import com.example.vaadin.ganttchart.ganttchart.GanttChart;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
@@ -19,7 +21,6 @@ import com.vaadin.data.util.converter.DateToLongConverter;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.shared.ui.datefield.Resolution;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -91,8 +92,8 @@ public class ExampleView extends VerticalLayout implements View {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				openStepEditor(new Step());
-				Notification.show("Not implemented yet!", Type.HUMANIZED_MESSAGE);
+				SomeEvent someEvent = new SomeEvent("", new DateTime(), new DateTime().plusDays(14));
+				openStepEditor(someEvent);
 			}
 		});
 	}
@@ -115,12 +116,12 @@ public class ExampleView extends VerticalLayout implements View {
 		group.bind(bgField, "backgroundColor");
 
 		DateField startDate = new DateField("Start date");
-		startDate.setResolution(Resolution.SECOND);
+		startDate.setDateFormat("yyyy-MM-dd");
 		startDate.setConverter(new DateToLongConverter());
 		group.bind(startDate, "startDate");
 
 		DateField endDate = new DateField("End date");
-		endDate.setResolution(Resolution.SECOND);
+		endDate.setDateFormat("yyyy-MM-dd");
 		endDate.setConverter(new DateToLongConverter());
 		group.bind(endDate, "endDate");
 
@@ -171,4 +172,5 @@ public class ExampleView extends VerticalLayout implements View {
 
 		getUI().addWindow(win);
 	}
+
 }

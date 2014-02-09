@@ -1,8 +1,11 @@
 package com.example.vaadin.ganttchart.domainmodel;
 
 import org.joda.time.DateTime;
+import org.tltv.gantt.client.shared.Step;
 
-public class SomeEvent {
+public class SomeEvent extends Step{
+
+	private static final long serialVersionUID = 1L;
 
 	private String name;
 	private DateTime start;
@@ -12,9 +15,9 @@ public class SomeEvent {
 	}
 
 	public SomeEvent(String name, DateTime start, DateTime end) {
-		this.name = name;
-		this.start = start;
-		this.end = end;
+		this.setCaption(name);
+		this.setStartDate(start.getMillis());
+		this.setEndDate(end.getMillis());
 	}
 
 	public String getName() {
