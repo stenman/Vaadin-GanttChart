@@ -21,9 +21,11 @@ import com.vaadin.data.util.converter.DateToLongConverter;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.MarginInfo;
+import com.vaadin.shared.ui.colorpicker.Color;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.ColorPicker;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
@@ -111,9 +113,9 @@ public class ExampleView extends VerticalLayout implements View {
 		captionField.setNullRepresentation("");
 		group.bind(captionField, "caption");
 
-		TextField bgField = new TextField("Background color");
-		bgField.setNullRepresentation("");
-		group.bind(bgField, "backgroundColor");
+		Color initialColor = new Color(55, 99, 177);
+		ColorPickerField colorPicker = new ColorPickerField("Select Color", initialColor);
+		group.bind(colorPicker, "backgroundColor");
 
 		DateField startDate = new DateField("Start date");
 		startDate.setDateFormat("yyyy-MM-dd");
@@ -131,7 +133,7 @@ public class ExampleView extends VerticalLayout implements View {
 		win.setContent(content);
 
 		content.addComponent(captionField);
-		content.addComponent(bgField);
+		content.addComponent(colorPicker);
 		content.addComponent(startDate);
 		content.addComponent(endDate);
 
